@@ -1,5 +1,8 @@
 package com.balaji;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
@@ -13,6 +16,50 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class WordCount {
+
+    private static void findPaths(int total, List<Integer> numbers, List<Integer> acc){
+        if(total==0){
+            System.out.println(acc);
+        } else{
+
+                for(int i:numbers) {
+                    if(total-i >= 0) {
+                        List<Integer> x =new ArrayList<>();
+                                x.addAll(acc);
+                        x.add(i);
+                        findPaths(total - i, numbers, x);
+                    }
+                }
+            }
+
+    }
+
+    static int minCostPath = -1;
+
+    private static void findShortestPath(int[][] input, List<Integer> result, int x, int y){
+        if(x > 2 || y >2)
+            return;
+        if(x==2 && y==2){
+            for(int n:result){
+                System.out.print(n);
+            }
+            System.out.println();
+        }else{
+            List<Integer> newResult = new ArrayList<>();
+            newResult.addAll(result);
+            newResult.add(input[x][y]);
+            findShortestPath(input, newResult, x+1, y);
+            findShortestPath(input, newResult, x, y+1);
+        }
+    }
+
+    public static void main(String[] args){
+        findPaths(13, Arrays.asList(3,5,10), new ArrayList<>());
+    }
+    public static void main2(String[] args){
+        int[][] input = {{0,1,2},{3,4,5},{6,7,8}};
+        findShortestPath(input, new ArrayList<>(), 0,0);
+    }
 
     public static class TokenizerMapper
             extends Mapper<Object, Text, Text, IntWritable>{
@@ -48,7 +95,7 @@ public class WordCount {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main1(String[] args) throws Exception {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(WordCount.class);

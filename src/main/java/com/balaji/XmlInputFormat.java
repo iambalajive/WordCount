@@ -18,7 +18,6 @@ public class XmlInputFormat extends TextInputFormat {
     public static final String START_TAG_KEY = "<employee>";
     public static final String END_TAG_KEY = "</employee>";
 
-    /*Krishna - Creating XMLInputformat Class for reading XML File*/
     @Override
     public RecordReader<LongWritable, Text> createRecordReader(
             InputSplit split, TaskAttemptContext context) {
